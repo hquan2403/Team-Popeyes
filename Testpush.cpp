@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 int main() {
-    cout << "Hello, World!" << endl;
+    cout<<"Vay la lan cuoi di ben nhau"<<endl;
     int a,b;
     return 0;
 } 
