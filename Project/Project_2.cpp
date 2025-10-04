@@ -1,5 +1,4 @@
-#include <iostream>
-#include <cmath>
+#include <bits/stdc++.h>
 using namespace std;
 const int MOD = 1e9 + 7;
 const int MAXN = 1e6;
@@ -28,5 +27,6 @@ int main() {
 			cout<<i<<" ";
 		}
 	}
-
+	cout<<endl;
+	
 }
