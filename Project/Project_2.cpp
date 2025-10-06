@@ -11,7 +11,7 @@ class User{
 	// construct , coppy construct , destruct
 	User(
 		string _Username= "user111",
-		string _Password= "123456789" 
+		string _Password= "123456789" // sửa lại mật khẩu cho đúng định dạng 111111
 	){
 		Username = _Username;
 		Password = _Password;
@@ -36,7 +36,7 @@ class User{
 
 	//>>, <<
 	friend istream& operator >> (istream& is, User &a){
-		cout<<"Enter your Username: ";
+		cout<<"Enter your Username: "; // sửa lại tiếng việt không dấu viết liền
 		getline(is,a.Username);
 		cout<<"Enter your Password: ";
 		getline(is,a.Password);
