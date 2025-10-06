@@ -20,9 +20,8 @@ int main() {
         else cout<<-1<<" ";
     }
     cout<<"Hello World";
-    //dwadwdawdwad
     return 0;
-    //dwnaidnwioandiwnaidniownaidnwaiod
+  
 } 
 
 
