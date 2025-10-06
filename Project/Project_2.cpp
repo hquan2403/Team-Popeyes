@@ -11,7 +11,7 @@ class User{
 	// construct , coppy construct , destruct
 	User(
 		string _Username= "user111",
-		string _Password= "123456789" // sửa lại mật khẩu cho đúng định dạng 111111
+		string _Password= "111111111" // sửa lại mật khẩu cho đúng định dạng 111111
 	){
 		Username = _Username;
 		Password = _Password;
@@ -36,16 +36,16 @@ class User{
 
 	//>>, <<
 	friend istream& operator >> (istream& is, User &a){
-		cout<<"Enter your Username: "; // sửa lại tiếng việt không dấu viết liền
+		cout<<"Hay nhap ten tai khoan: ";
 		getline(is,a.Username);
-		cout<<"Enter your Password: ";
+		cout<<"Hay nhap mat khau cua ban: ";
 		getline(is,a.Password);
 		return is;
 
 	}
 	friend ostream& operator << (ostream& os, User &a){
-		os<<"Your Username is: "<<a.getUsername()<<endl;
-		os<<"Your Password is: "<<a.getPassword()<<endl;
+		os<<"Ten tai khoan cua ban la: "<<a.getUsername()<<endl;
+		os<<"Mat khau cua ban la: "<<a.getPassword()<<endl;
 		return os;
 	}
 
@@ -63,7 +63,7 @@ class Administrator : public User{
 	// construct , coppy construct , destruct
 	Administrator(
 		string _Username= "user111",
-		string _Password= "123456789"
+		string _Password= "1111111111"
 	):User(_Username,_Password){
 		//
 	}
@@ -91,7 +91,7 @@ class Employee : public User {
 	// construct , coppy construct , destruct
 	Employee(
 		string _Username= "user111",
-		string _Password= "123456789",
+		string _Password= "111111111",
 		string _Name = "Nguyen Van A",
 		string _Address= "111 Tran Hung Dao Quan 1",
 		string _Phonenumber ="1234567890",
@@ -134,22 +134,22 @@ class Employee : public User {
 	//>>, <<
 	friend istream& operator >> (istream& is, Employee &a){
 		a.User::Type();
-		cout<<"Enter your Name: ";
+		cout<<"Hay nhap ho ten cua ban: ";
 		getline(is,a.Name);
-		cout<<"Enter your Address: ";
+		cout<<"Hay nhap dia chi cua ban: ";
 		getline(is,a.Address);
-		cout<<"Enter your Phone Number: ";
+		cout<<"Hay nhap so dien thoai cua ban: ";
 		getline(is,a.Phonenumber);
-		cout<<"Enter your Email: ";
+		cout<<"Hay nhap email cua ban: ";
 		getline(is,a.Email);
 		return is;
 	}
 	friend ostream& operator << (ostream& os, Employee &a){
 		a.User::Out();
-		os<<"Your Name is: "<<a.getName()<<endl;
-		os<<"Your Address is: "<<a.getAddress()<<endl;
-		os<<"Your Phone Number is: "<<a.getPhonenumber()<<endl;
-		os<<"Your Email is: "<<a.getEmail()<<endl;
+		os<<"Ho ten cua ban la: "<<a.getName()<<endl;
+		os<<"Dia chi cua ban la: "<<a.getAddress()<<endl;
+		os<<"So dien thoai cua ban la: "<<a.getPhonenumber()<<endl;
+		os<<"Email cua ban la: "<<a.getEmail()<<endl;
 		return os;
 	}
 	void LoginEm(){}
