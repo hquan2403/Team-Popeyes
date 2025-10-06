@@ -8,6 +8,7 @@ bool snt(int n){
     return true;
 }
 int main() {
+
     int n;
     cin>>n;
     int a[n];
@@ -18,6 +19,11 @@ int main() {
         if(snt(a[i])) cout<<a[i]<<" ";
         else cout<<-1<<" ";
     }
+    cout<<"Hello World";
+    //dwadwdawdwad
     return 0;
+    //dwnaidnwioandiwnaidniownaidnwaiod
 } 
+
+
 
