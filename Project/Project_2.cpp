@@ -3,6 +3,9 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int MAXN = 1e6;
 
+// thuật toán: sort , search , delete.
+// List Employee_Formation , add.
+
 class User{
 	private:
 	string Username;
