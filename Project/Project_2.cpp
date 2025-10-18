@@ -7,6 +7,19 @@ const int MAXN = 1e6;
 // thuật toán: sort , search , delete.
 // List Employee_Formation , add.
 
+
+// Lớp làm đơn xin nghỉ
+class LeaveRequest {
+public:
+    string username;  // ai gửi đơn
+    string reason;    // lý do nghỉ
+    int days;         // số ngày nghỉ
+
+    LeaveRequest(const string &u, const string &r, int d)
+        : username(u), reason(r), days(d) {}
+};
+
+
 class User{
 protected:
 	string Username;
@@ -159,7 +172,6 @@ public:
 	EmployeeList() {
 		head = nullptr; 
 	}
-
 	// Hủy để tránh rò bộ nhớ
 	~EmployeeList() {
 		Node *current = head;
@@ -378,7 +390,6 @@ public:
 				if(!email.empty()) {
 					p->data->setEmail(email);
 				}
-
 				cout<<"Cap nhat thong tin cho nhan vien thanh cong"<<endl;
 				return;
 			}
@@ -497,6 +508,25 @@ public:
 		}
 		cout<<"Username hoac mat khau khong chinh xax"<<endl;
 	}
+
+	 queue<LeaveRequest> leaveQueue;
+	// Hàm duyệt đơn xin nghỉ
+	void SubmitLeaveRequest() {
+		if(currentUser == nullptr) {
+            cout<<"Chua dang nhap"<<endl;
+            return;
+        }
+		string reason;
+        int days;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout<<"Nhap ly do xin nghi: ";
+        getline(cin, reason);
+        cout<<"Nhap so ngay nghi: ";
+        cin >> days;
+
+        leaveQueue.push(LeaveRequest(currentUser->getUsername(), reason, days));
+        cout<<"Da gui don xin nghi."<<endl;
+	}
 };
 
 // Lớp cho admin
@@ -528,9 +558,9 @@ class Administrator : public User{
 		while(attempt < 3) {
 			string user, pass;
 			cout<<"=== ADMIN LOGIN ==="<<endl;
-			cout<<"Vui long nhap username cua ban: "<<flush;
+			cout<<"Vui long nhap username cua ban: ";
 			getline(cin, user);
-			cout<<"Vui long nhap mat khau cua ban: "<<endl;
+			cout<<"Vui long nhap mat khau cua ban: ";
 			char ch;
 			pass = "";
 
@@ -610,7 +640,31 @@ class Administrator : public User{
 	void Showall(EmployeeList &list){
 		list.ShowALL();
 	}
+
+	// Hàm quản lý và duyệt đơn xin nghỉ
+	void ProcessLeaveRequests(EmployeeList &list) {
+		if(list.leaveQueue.empty()) {
+            cout<<"Khong co don xin nghi nao"<<endl;
+            return;
+        }
+		cout<<"--- DUYET DON XIN NGHI ---"<<endl;
+		while(!list.leaveQueue.empty()) {
+			LeaveRequest &req = list.leaveQueue.front();
+			cout<<"Nhan vien: "<<req.username<<", so ngay: "<<req.days<<", ly do: "<<req.reason<<endl;
+
+			char choice;
+			cout<<"Quyet dinh duyet (Y hoac N): ";
+			cin>>choice;
+			if(choice == 'Y' || choice == 'y') {
+				cout<<"Da chap nhan don xin nghi cua "<<req.username<<endl;
+			} else {
+				cout<<"Tu choi don xin nghi cua "<<req.username<<endl;
+			}
+			list.leaveQueue.pop();
+		}
+	}
 };
+
 
 int main() {
     EmployeeList list;        
@@ -635,7 +689,9 @@ int main() {
                 cout<<"3. Cap nhat thong tin nhan vien"<<endl;
                 cout<<"4. Tim kiem nhan vien"<<endl;
                 cout<<"5. Hien thi danh sach nhan vien"<<endl;
-                cout<<"6. Thoat"<<endl;
+				cout<<"6. Duyen don xin nghi cua nhan vien"<<endl;
+                cout<<"7. Thoat"<<endl;
+
                 cout<<"Nhap lua chon: ";
                 cin>>choice;
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -656,13 +712,16 @@ int main() {
                     case 5:
                         admin.Showall(list);
                         break;
-                    case 6:
+					case 6:
+						admin.ProcessLeaveRequests(list);
+            			break;
+                    case 7:
                         cout<<"Dang xuat...\n";
                         break;
                     default:
                         cout<<"Lua chon khong hop le"<<endl;
                 }
-            } while (choice != 6);
+            } while (choice != 7);
         }
     } 
     else if (roleChoice == 2) {
@@ -685,13 +744,16 @@ int main() {
                 case 2:
                     list.ChangePassword();
                     break;
-                case 3:
+				case 3:
+					list.SubmitLeaveRequest();
+            		break;
+                case 4:
                     cout<<"Dang xuat..."<<endl;
                     break;
                 default:
                     cout<<"Lua chon khong hop le"<<endl;
             }
-        } while (choice != 3);
+        } while (choice != 4);
     } 
     else {
         cout<<"Lua chon khong hop le. Ket thuc chuong trinh"<<endl;
