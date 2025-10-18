@@ -205,12 +205,61 @@ class EmployeeList {
 
 		// Hàm xóa nhân viên
 		void DeleteEmployee() {
+			if(!head) {
+				cout<<"Danh sach rong";
+				return;
+			}
+			cout<<"Nhap username can xoa: ";
+			string username;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			getline(cin, username);
 
+			// head cần xóa nằm đầu linked list
+			if(head->data->getUsername() == username) {
+				Node *tmp = head;
+				head = head->next;
+				if(tmp->data) {
+					delete tmp->data;
+				}
+				delete tmp;
+				cout<<"Da xoa nhan vien: "<<username<<endl;
+				return;
+			}
+
+			// Từ thứ hai trở đi
+			Node *prev = head;
+			Node *cur = head->next;
+			while(cur) {
+				if(cur->data->getUsername() == username) {
+					prev->next = cur->next;
+					if(cur->data) {
+						delete cur->data;
+					}
+					delete cur;
+					cout<<"Da xoa nhan vien: "<<username<<endl;
+					return;
+				}
+				prev = cur;
+				cur = cur->next;
+			}
+			cout<<"Khong tim thay username: "<<username<<endl;
 		}
 
 		// Hàm hiển thị
 		void ShowALL() {
-
+			if(!head) {
+				cout<<"Danh sach rong"<<endl;
+				return;
+			}
+			Node *p = head;
+			int index = 1;
+			while(p) {
+				cout<<"--- Nhan vien "<<index + 1<<" ---"<<endl;
+				if(p->data) {
+					cout<<*(p->data)<<endl;
+				}
+				p = p->next;
+			}
 		}
 
 		// Chuyển linked list sang vector để dễ sử dụng Merge Sort và Binary Search
@@ -295,6 +344,7 @@ class EmployeeList {
 			}
 			string username;
 			cout<<"Nhap username can tim: ";
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			getline(cin, username);
 			int index = binarySearch(v, username);
 			if(index != -1) {
@@ -309,22 +359,42 @@ class EmployeeList {
 	void ChangePassword(){}
 int main() {printf("");
 	EmployeeList list;
+	int choice;
 
-	cout<<"Nhap so luong nhan vien: "<<endl;
-	int n;
-	cin>>n;
-	// Consume the newline character left in the input buffer
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	do {
+		cout<<"=== MENU QUAN LY NHAN VIEN ==="<<endl;
+		cout<<"1. Them nhan vien"<<endl;
+		cout<<"2. Hien thi danh sach nhan vien"<<endl;
+		cout<<"3. Xoa nhan vien khoi danh sach"<<endl;
+		cout<<"4. Sap xep và tim kiem nhan vien"<<endl;
+		cout<<"================================"<<endl;
+		cout<<"Nhap lua chon: ";
 
-
-	for(int i = 0; i < n; i++) {
-		cout<<"--- Nhap thong tin nhan vien: "<<i + 1<<endl;
-		Employee *e = new Employee();
-		cin>> *e;
-		list.AddEmployee(e);
-	}
+		cin>>choice;
+		switch (choice) {
+			case 1: { // Thêm nhân viên
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				Employee *e = new Employee();
+				 cin >> *e;
+            	list.AddEmployee(e);
+            	break;
+			}
+			case 2: // Show 
+				list.ShowALL();
+				break;
+			case 3: // Xóa
+				list.DeleteEmployee();
+				break;
+			case 4: // Sắp xếp và tìm kiếm
+				list.SortAndSearch();
+				break;
+			case 5:
+				cout<<"Thoat chuong trinh"<<endl;
+				break;
+			default:
+				cout<<"Lua chon khong hop le"<<endl;
+		}
+	} while (choice != 5);
 	
-	// Gọi tính năng sắp xếp tìm kiếm
-	list.SortAndSearch();
 return 0;
 }
