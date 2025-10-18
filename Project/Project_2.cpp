@@ -617,11 +617,11 @@ int main() {
     Administrator admin;      
     int roleChoice;   
 
-    cout << "==== XIN CHAO BAN DEN HE THONG QUAN LY NHAN SU ====\n";
-    cout << "1. Ban la ADMIN\n";
-    cout << "2. Ban la NHAN VIEN\n";
-    cout << "Nhap lua chon: ";
-    cin >> roleChoice;
+    cout<<"==== XIN CHAO BAN DEN HE THONG QUAN LY NHAN SU ===="<<endl;
+    cout<<"1. Ban la ADMIN"<<endl;
+    cout<<"2. Ban la NHAN VIEN"<<endl;
+    cout<<"Nhap lua chon: "<<endl;
+    cin>>roleChoice;
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (roleChoice == 1) {
@@ -629,17 +629,17 @@ int main() {
         if (admin.LoginAd()) {
             int choice;
             do {
-                cout << "\n=== MENU ADMIN ===\n";
-                cout << "1. Them nhan vien moi\n";
-                cout << "2. Xoa nhan vien\n";
-                cout << "3. Cap nhat thong tin nhan vien\n";
-                cout << "4. Tim kiem nhan vien\n";
-                cout << "5. Hien thi danh sach nhan vien\n";
-                cout << "6. Thoat\n";
-                cout << "Nhap lua chon: ";
-                cin >> choice;
+                cout<<"\n=== MENU ADMIN ==="<<endl;
+                cout<<"1. Them nhan vien moi"<<endl;
+                cout<<"2. Xoa nhan vien"<<endl;
+                cout<<"3. Cap nhat thong tin nhan vien"<<endl;
+                cout<<"4. Tim kiem nhan vien"<<endl;
+                cout<<"5. Hien thi danh sach nhan vien"<<endl;
+                cout<<"6. Thoat"<<endl;
+                cout<<"Nhap lua chon: ";
+                cin>>choice;
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				
+
                 switch (choice) {
                     case 1:
                         admin.addEmployee(list);
@@ -657,10 +657,10 @@ int main() {
                         admin.Showall(list);
                         break;
                     case 6:
-                        cout << "Dang xuat...\n";
+                        cout<<"Dang xuat...\n";
                         break;
                     default:
-                        cout << "Lua chon khong hop le.\n";
+                        cout<<"Lua chon khong hop le"<<endl;
                 }
             } while (choice != 6);
         }
@@ -670,12 +670,12 @@ int main() {
         list.LoginEm();
         int choice;
         do {
-            cout << "\n=== MENU NHAN VIEN ===\n";
-            cout << "1. Xem thong tin ca nhan\n";
-            cout << "2. Doi mat khau\n";
-            cout << "3. Thoat\n";
-            cout << "Nhap lua chon: ";
-            cin >> choice;
+            cout<<"\n=== MENU NHAN VIEN ==="<<endl;
+            cout<<"1. Xem thong tin ca nhan"<<endl;
+            cout<<"2. Doi mat khau"<<endl;
+            cout<<"3. Thoat"<<endl;
+            cout<<"Nhap lua chon: ";
+            cin>>choice;
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             switch (choice) {
@@ -686,16 +686,16 @@ int main() {
                     list.ChangePassword();
                     break;
                 case 3:
-                    cout << "Dang xuat...\n";
+                    cout<<"Dang xuat..."<<endl;
                     break;
                 default:
-                    cout << "Lua chon khong hop le.\n";
+                    cout<<"Lua chon khong hop le"<<endl;
             }
         } while (choice != 3);
     } 
     else {
-        cout << "Lua chon khong hop le. Ket thuc chuong trinh.\n";
+        cout<<"Lua chon khong hop le. Ket thuc chuong trinh"<<endl;
     }
 
-    return 0;
+return 0;
 }
