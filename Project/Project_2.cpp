@@ -19,6 +19,21 @@ public:
         : username(u), reason(r), days(d) {}
 };
 
+// Hàm chuẩn hóa tên
+string standardizeNames(string name) {
+	stringstream ss(name);
+	string word = "";
+	string res = "";
+	while(ss >> word) {
+		word[0] = toupper(word[0]);
+		for(int i = 1; i < word.size(); i++) {
+			word[i] = tolower(word[i]);
+		}
+		res += word + " ";
+	}
+	res.pop_back();
+	return res;
+}
 
 class User{
 protected:
@@ -195,7 +210,7 @@ public:
 			}
 			tmp->next = newNode;
 		}
-		cout<<"Da them nhan vien thanh cong"<<endl;
+		cout<<"Da them nhan vien thanh cong va mat khau mac dinh cua nhan vien la 11111"<<endl;
 	}
 
 	// Hàm xóa nhân viên
@@ -344,9 +359,9 @@ public:
 		getline(cin, username);
 		int index = binarySearch(v, username);
 		if(index != -1) {
-			cout<<"Nhan vien có ma username: "<<v[index].getUsername()<<" duoc tim thay o vi tri so "<<index + 1<<endl;
+			cout<<"Nhan vien có ma username "<<v[index].getUsername()<<" duoc tim thay o vi tri so "<<index + 1<<endl;
 		} else {
-			cout<<"Khong tim thay nhan vien co username: "<<username<<" trong danh sach"<<endl;
+			cout<<"Khong tim thay nhan vien co username "<<username<<" trong danh sach"<<endl;
 		}
 	}
 
@@ -370,6 +385,8 @@ public:
 
 				cout<<"Nhap ho ten moi (bo trong neu giu nguyen): ";
 				getline(cin, name);
+				name = standardizeNames(name);
+
 				cout<<"Nhap dia chi moi (bo trong neu giu nguyen): ";
 				getline(cin, address);
 				cout<<"Nhap so dien thoai moi (bo trong neu giu nguyen): ";
@@ -407,9 +424,9 @@ public:
     		return;
     	}
 		string user, pass;
-		cout<<"Vui long nhap username: "<<endl;
+		cout<<"Vui long nhap username: ";
 		cin>>user;
-		cout<<"Vui long nhap mat khau: "<<endl;
+		cout<<"Vui long nhap mat khau: ";
 
 		char ch;
 		pass = "";
@@ -459,9 +476,9 @@ public:
 			return;
 		}
 		string user, oldPass, newPass;
-		cout<<"Nhap username"<<endl;
+		cout<<"Nhap username: ";
 		cin>>user;
-		cout<<"Nhap mat khau hien tai"<<endl;
+		cout<<"Nhap mat khau hien tai: ";
 
 		char ch;
 		oldPass = "";
@@ -483,7 +500,7 @@ public:
 		Node *p = head;
 		while(p != nullptr) {
 			if(p->data->getUsername() == user && p->data->getPassword() == oldPass) {
-				cout<<"Nhap mat khau moi"<<endl;
+				cout<<"Nhap mat khau moi: ";
 				newPass = "";
 				while(true) {
 					ch = _getch();
@@ -506,7 +523,7 @@ public:
 			}	
 			p = p->next;
 		}
-		cout<<"Username hoac mat khau khong chinh xax"<<endl;
+		cout<<"Username hoac mat khau khong chinh xac"<<endl;
 	}
 
 	 queue<LeaveRequest> leaveQueue;
@@ -579,7 +596,7 @@ class Administrator : public User{
 				}
 			}
 			cout<<endl;
-		
+
 			// Kiểm tra đăng nhập
 			for(auto &acc : adminAccounts) {
 				if(user == acc.first && pass == acc.second) {
@@ -600,30 +617,29 @@ class Administrator : public User{
 		return false;
 	}
 	void addEmployee(EmployeeList &list){
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
     	string username, name, address, phone, email;
 
 		cout<<"--- THEM NHAN VIEN MOI ---"<<endl;
-		cout<<"Nhap username"<<endl;
+		cout<<"Nhap username: ";
 		getline(cin, username);
 
-		cout<<"Nhap ho ten"<<endl;
+		cout<<"Nhap ho ten: ";
 		getline(cin, name);
+		name = standardizeNames(name);
 
-		cout<<"Nhap dia chi"<<endl;
+		cout<<"Nhap dia chi: ";
 		getline(cin, address);
 
-		cout<<"Nhap so dien thoai"<<endl;
+		cout<<"Nhap so dien thoai: ";
 		getline(cin, phone);
 
-		cout<<"Nhap email"<<endl;
+		cout<<"Nhap email: ";
 		getline(cin, email);
 
 		// Tạo mật khẩu cho nhân viên mặc định là 11111
 		Employee *e = new Employee(username, "11111", name, address, phone, email);
 
 		list.AddEmployee(e); // Thêm vào danh sách
-		cout<<"Da them nhan vien thanh cong va mat khau mac dinh la 11111"<<endl;
 	}
 	void deleteEmployee(EmployeeList &list){
 		cout<<"--- XOA NHAN VIEN ---"<<endl;
@@ -638,7 +654,22 @@ class Administrator : public User{
 		list.UpdateEmployee();
 	}
 	void Showall(EmployeeList &list){
-		list.ShowALL();
+		if (!list.toVector().size()) {
+        	cout << "Danh sach nhan vien rong." << endl;
+        	return;
+    	}
+		vector<Employee> v = list.toVector();
+		int index = 1;
+		for(auto &e : v) {
+			cout<<"Nhan vien so: "<<index<<endl;
+			cout<<"Ten "<<e.getName()<<endl;
+			cout<<"Username "<<e.getUsername()<<endl;
+			cout<<"SĐT "<<e.getPhonenumber()<<endl;
+			cout<<"Email "<<e.getEmail()<<endl;
+			cout<<"Dia chi "<<e.getAddress()<<endl;
+			cout<<"Mat khau "<<e.getPassword()<<endl;
+			index++;
+		}
 	}
 
 	// Hàm quản lý và duyệt đơn xin nghỉ
@@ -674,14 +705,14 @@ int main() {
     cout<<"==== XIN CHAO BAN DEN HE THONG QUAN LY NHAN SU ===="<<endl;
     cout<<"1. Ban la ADMIN"<<endl;
     cout<<"2. Ban la NHAN VIEN"<<endl;
-    cout<<"Nhap lua chon: "<<endl;
+    cout<<"Nhap lua chon: ";
     cin>>roleChoice;
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (roleChoice == 1) {
         // Đăng nhập Admin
         if (admin.LoginAd()) {
-            int choice;
+            int choice = 0;
             do {
                 cout<<"\n=== MENU ADMIN ==="<<endl;
                 cout<<"1. Them nhan vien moi"<<endl;
@@ -691,11 +722,10 @@ int main() {
                 cout<<"5. Hien thi danh sach nhan vien"<<endl;
 				cout<<"6. Duyen don xin nghi cua nhan vien"<<endl;
                 cout<<"7. Thoat"<<endl;
-
                 cout<<"Nhap lua chon: ";
-                cin>>choice;
+				
+				cin>>choice;
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                 switch (choice) {
                     case 1:
                         admin.addEmployee(list);
@@ -732,7 +762,8 @@ int main() {
             cout<<"\n=== MENU NHAN VIEN ==="<<endl;
             cout<<"1. Xem thong tin ca nhan"<<endl;
             cout<<"2. Doi mat khau"<<endl;
-            cout<<"3. Thoat"<<endl;
+			cout<<"3. Lam don xin nghi"<<endl;
+            cout<<"4. Thoat"<<endl;
             cout<<"Nhap lua chon: ";
             cin>>choice;
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
