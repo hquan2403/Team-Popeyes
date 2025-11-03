@@ -318,7 +318,98 @@ public:
 		}
 		return v;
 	}
-			
+
+	// Lưu danh sách nhân viên và các đơn xin nghỉ ra file
+	void saveToFile(const string& filename = "employees.txt") {
+		ofstream fout(filename);
+		if(!fout) {
+			cout << "Khong the mo file de ghi!" << endl;
+			return;
+		}
+		Node *p = head;
+		while(p) {
+			Employee *e = p->data;
+			fout<<e->getUsername()<<endl;
+			fout<<e->getPassword()<<endl; 
+			fout<<e->getName()<<endl; 
+			fout<<e->getAddress()<<endl; 
+			fout<<e->getPhonenumber()<<endl; 
+			fout<<e->getEmail()<<endl;
+			fout<<e->getRewardSuggestion()<<endl;
+			fout<<e->getPerformanceScore()<<endl; 
+			p = p->next;
+		}
+		// Ghi số lượng đơn xin nghỉ
+		fout<<leaveQueue.size()<<endl;
+		queue<LeaveRequest> tmpQueue = leaveQueue;
+		while(!tmpQueue.empty()) {
+			LeaveRequest &req = tmpQueue.front();
+			fout<<req.username<<endl;
+			fout<<req.reason<<endl;
+			fout<<req.username<<endl;
+			tmpQueue.pop();
+		}
+		fout.close();
+		cout<<"Da luu danh sach nhan vien va don xin nghi vao file"<<filename<<endl;
+	}
+		
+	// Đọc danh sách nhân viên và đơn xin nghỉ từ file
+	void loadFromFile(const string& filename = "employees.txt") {
+		ifstream fin(filename);
+		if(!fin) { 
+			cout << "Khong the mo file de doc!" << endl; 
+			return; 
+		}
+
+		// Trước hết xóa danh sách hiện tại
+		Node *current = head;
+		while(current) {
+			Node *nextNode = current->next;
+			delete current;
+			current = nextNode;
+		}
+		head = nullptr;
+		leaveQueue = queue<LeaveRequest>(); // reset queue
+
+		string line;
+		while(getline(fin, line)) {
+			string username = line;
+			if(username.empty()) {
+				break;
+			}
+			string password, name, address, phone, email;
+			int reward, perf;
+
+			getline(fin, password);
+			getline(fin, name);
+			getline(fin, address);
+			getline(fin, phone);
+			getline(fin, email);
+			getline(fin, line);
+			reward = stoi(line);
+			getline(fin, line);
+			perf = stoi(line);
+
+			Employee *e = new Employee(username, password, name, address, phone, email, reward, perf);
+
+			// Đọc số lượng đơn xin nghỉ
+			int leaveCount = 0;
+			if(fin >> leaveCount) {
+				fin.ignore(numeric_limits<streamsize>::max(), '\n');
+				for(int i = 0; i < leaveCount; i++) {
+					string uname, reason;
+					int days;
+					getline(fin, uname);
+					getline(fin, reason);
+					fin>>days;
+					fin.ignore(numeric_limits<streamsize>::max(), '\n');
+					leaveQueue.push(LeaveRequest(uname, reason, days));
+				}
+			}
+			fin.close();
+			cout<<"Da doc danh sach nhan vien va don xin nghi tu file "<<filename<<endl;
+		}
+	}
 	// Hàm sắp xếp (Merge Sort)
 	static void merge(vector<Employee> &v, int l, int m, int r) {
 		vector<Employee> left(v.begin() + l, v.begin() + m + 1);
@@ -875,7 +966,8 @@ class Administrator : public User{
 
 
 int main() {
-    EmployeeList list;        
+    EmployeeList list;  
+	list.loadFromFile("Employees.txt");      
     Administrator admin;  
 	
 	while(true) {
@@ -928,6 +1020,7 @@ int main() {
 							admin.OptimizeBonus(list);
     						break;
                 	    case 8:
+							list.saveToFile("D:\\DSA_LAB\\Employees.txt");
                 	        cout<<"Dang xuat...\n";
                 	        break;
                 	    default:
@@ -961,6 +1054,7 @@ int main() {
 						list.SubmitLeaveRequest();
             			break;
             	    case 4:
+						list.saveToFile("Employees.txt");
             	        cout<<"Dang xuat..."<<endl;
             	        break;
             	    default:
@@ -976,6 +1070,5 @@ int main() {
 			cout<<"Lua chon khong hop le, vui long chon lai"<<endl;
 		}
 	}
-    
 return 0;
 }
