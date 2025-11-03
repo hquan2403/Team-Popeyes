@@ -391,6 +391,7 @@ public:
 			perf = stoi(line);
 
 			Employee *e = new Employee(username, password, name, address, phone, email, reward, perf);
+			AddEmployee(e);
 
 			// Đọc số lượng đơn xin nghỉ
 			int leaveCount = 0;
@@ -406,9 +407,9 @@ public:
 					leaveQueue.push(LeaveRequest(uname, reason, days));
 				}
 			}
-			fin.close();
-			cout<<"Da doc danh sach nhan vien va don xin nghi tu file "<<filename<<endl;
 		}
+		fin.close();
+		cout<<"Da doc danh sach nhan vien va don xin nghi tu file "<<filename<<endl;
 	}
 	// Hàm sắp xếp (Merge Sort)
 	static void merge(vector<Employee> &v, int l, int m, int r) {
@@ -854,12 +855,12 @@ class Administrator : public User{
 		int index = 1;
 		for(auto &e : v) {
 			cout<<"Nhan vien so: "<<index<<endl;
-			cout<<"Ten "<<e.getName()<<endl;
-			cout<<"Username "<<e.getUsername()<<endl;
-			cout<<"SĐT "<<e.getPhonenumber()<<endl;
-			cout<<"Email "<<e.getEmail()<<endl;
-			cout<<"Dia chi "<<e.getAddress()<<endl;
-			cout<<"Mat khau "<<e.getPassword()<<endl;
+			cout<<"Ten: "<<e.getName()<<endl;
+			cout<<"Username: "<<e.getUsername()<<endl;
+			cout<<"SĐT: "<<e.getPhonenumber()<<endl;
+			cout<<"Email: "<<e.getEmail()<<endl;
+			cout<<"Dia chi: "<<e.getAddress()<<endl;
+			cout<<"Mat khau: "<<e.getPassword()<<endl;
 			index++;
 		}
 	}
@@ -1020,7 +1021,7 @@ int main() {
 							admin.OptimizeBonus(list);
     						break;
                 	    case 8:
-							list.saveToFile("D:\\DSA_LAB\\Employees.txt");
+							list.saveToFile("Employees.txt");
                 	        cout<<"Dang xuat...\n";
                 	        break;
                 	    default:
