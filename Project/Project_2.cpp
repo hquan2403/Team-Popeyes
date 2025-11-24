@@ -9,9 +9,6 @@
 #include <limits> 
 using namespace std; 
 
-const int MOD = 1e9 + 7; 
-const int MAXN = 1e6;
-
 // Lớp làm đơn xin nghỉ
 class LeaveRequest {
 public:
@@ -35,7 +32,9 @@ public:
 			}
 			res += word + " ";
 		}
-		res.pop_back();
+		if(!res.empty()) {
+			res.pop_back();
+		}
 		return res;
 	}
 
@@ -44,10 +43,9 @@ protected:
 	string Username;
 	string Password;
 public:
-	// construct , coppy construct , destruct
 	User(
 		const string _Username= "user111",
-		const string _Password= "11111" 
+		const string _Password= "111111" 
 	){
 		Username = _Username;
 		Password = _Password;
@@ -58,11 +56,9 @@ public:
 	}
 	virtual ~User(){}
 
-	//get
 	string getUsername() const { return Username;}
 	string getPassword() const { return Password;}
 
-	//set
 	void setUsername(string a= " "){
 		Username = a;
 	}
@@ -70,7 +66,6 @@ public:
 		Password = a;
 	}
 
-	public: 
 	virtual void input(istream& is) {
 		cout<<"Hay nhap ten tai khoan: ";
 		getline(is, Username);
@@ -95,14 +90,13 @@ public:
 	}
 
 class Employee : public User {
-	private:
+private:
 	string Name;
 	string Address;
 	string Phonenumber;
 	string Email;
 	
-	public:
-	// construct , coppy construct , destruct
+public:
 	Employee(
 		const string _Username= "user111",
 		const string _Password= "111111111",
@@ -112,23 +106,28 @@ class Employee : public User {
 		const string _Email ="NguyenVanA@gmail.com"
 	):User(_Username,_Password){
 
-	this->Name = _Name;
-	this->Address = _Address;
-	this->Phonenumber = _Phonenumber;
-	this->Email = _Email;
+		this->Name = _Name;
+		this->Address = _Address;
+		this->Phonenumber = _Phonenumber;
+		this->Email = _Email;
 	}	
+
 	string getName() const{
 		return Name;
 	}
+
 	string getAddress() const {
 		return Address;
 	}
+
 	string getPhonenumber() const {
 		return Phonenumber;
 	}
+
 	 string getEmail() const {
 		return Email;
 	}
+
 	void setName(const string &_Name) { Name = _Name; }
 	void setAddress(const string &_Address) { Address = _Address; }
 	void setPhonenumber(const string &_Phone) { Phonenumber = _Phone; }
@@ -136,35 +135,31 @@ class Employee : public User {
 
 
 	void input(istream& is) override {
-        User::input(is); // Gọi hàm input của lớp cha để nhập Username/Password
-        cout << "Hay nhap ho ten cua ban: ";
+        User::input(is); 
+        cout<<"Hay nhap ho ten cua ban: ";
         getline(is, Name);
-        cout << "Hay nhap dia chi cua ban: ";
+        cout<<"Hay nhap dia chi cua ban: ";
         getline(is, Address);
-        cout << "Hay nhap so dien thoai cua ban: ";
+        cout<<"Hay nhap so dien thoai cua ban: ";
         getline(is, Phonenumber);
-        cout << "Hay nhap email cua ban: ";
+        cout<<"Hay nhap email cua ban: ";
         getline(is, Email);
     }
 	void output(ostream& os) const override {
-        User::output(os); // Gọi hàm output của lớp cha để xuất thông tin chung
-        os << "Ho ten cua ban la: " << getName() << endl;
-        os << "Dia chi cua ban la: " << getAddress() << endl;
-        os << "So dien thoai cua ban la: " << getPhonenumber() << endl;
-        os << "Email cua ban la: " << getEmail() << endl;
+        User::output(os);
+        os<<"Ho ten cua ban la: "<<getName()<<endl;
+        os<<"Dia chi cua ban la: "<<getAddress()<<endl;
+        os<<"So dien thoai cua ban la: "<<getPhonenumber()<<endl;
+        os<<"Email cua ban la: "<<getEmail()<<endl;
     }
 }; 
 
-
-// Class cho danh sách liên kết
 class EmployeeList {
 private:
-	// Lớp Node
 	class Node {
 	public:
 		Employee *data;
 		Node *next;
-		// Hàm khởi tạo cho Node
 		Node(Employee *emp) : data(emp), next(nullptr) {}
 	};
 	Node *head;
@@ -178,16 +173,78 @@ public:
 		Node *current = head;
 		while(current != nullptr) {
 			Node *nextNode = current->next;
-			delete current->data; // Xóa đối tượng Employee được trỏ bởi data
-			delete current; // Xóa Node hiện tại
-			current = nextNode; // Di chuyển đến Node tiếp theo
+			delete current->data; 
+			delete current; 
+			current = nextNode; 
+		}
+	}
+
+	// Hàm kiểm tra username đã tồn tại chưa
+	bool isUsernameExists(const string &username) {
+		Node *p = head;
+		while(p != nullptr) {
+			string u = p->data->getUsername();
+
+			// Xóa khoảng trắng
+			while(!u.empty() && isspace(u.front())) {
+				u.erase(u.begin());
+			}
+			while(!u.empty() && isspace(u.back())) {
+				u.pop_back();
+			}
+
+			string inputUser = username;
+			while(!inputUser.empty() && isspace(inputUser.front())) {
+				inputUser.erase(inputUser.begin());
+			}
+			while(!inputUser.empty() && isspace(inputUser.back())) {
+				inputUser.pop_back();
+			}
+			if(u == inputUser) {
+				return true;
+			}
+			p = p->next;
+		}
+		return false;
+	}
+
+	// Tạo file thông tin cho user
+	void CreateUserFile (const string &username, const string &name, const string &address, const string &phone, const string &email) {
+		string filename = username + ".txt";
+		ofstream fout(filename);
+		if(!fout.is_open()) {
+			cout << "Loi tao file " << filename << endl;
+			return;
+		}
+		fout<<name<<endl;
+		fout<<address<<endl;
+		fout<<phone<<endl;
+		fout<<email<<endl;
+		fout.close();
+	}
+
+	// Cập nhật file thông tin user
+	void UpdateUserFile(const string &username, const string &name, const string &address, const string &phone, const string &email) {
+		CreateUserFile(username, name, address, phone, email);
+	}
+
+	// Xóa thông tin user
+	void DeleteUserFile(const string &username) {
+		string filename = username + ".txt";
+		if(remove(filename.c_str()) == 0) {
+			cout<<"Da xoa file "<<filename<<endl;
 		}
 	}
 
 	// Hàm thêm nhân viên vào danh sách
 	void AddEmployee(Employee *emp, bool saveToFile = true) {
-		if(!emp) return;
-		if(emp->getUsername().empty() || emp->getName().empty()) return;
+		if(!emp) {
+			return;
+		}
+
+		if(emp->getUsername().empty() || emp->getName().empty()) {
+			return;
+		}
 
 		Node *newNode = new Node(emp);
 		if(head == NULL) {
@@ -199,9 +256,12 @@ public:
 			}
 			tmp->next = newNode;
 		}
-		cout<<"Da them nhan vien thanh cong va mat khau mac dinh cua nhan vien la 11111"<<endl;
 		if(saveToFile) {
+			cout<<"Da them nhan vien thanh cong va mat khau mac dinh cua nhan vien la 11111"<<endl;
 			SaveToFile("Employees.txt");
+
+			// Tạo file thông tin cho user
+			CreateUserFile(emp->getUsername(), emp->getName(), emp->getAddress(), emp->getPhonenumber(), emp->getEmail());
 		}
 	}
 
@@ -227,7 +287,7 @@ public:
     	fout.close();
 	}
 
-	
+	// Hàm load từ file
 	void LoadFromFile(const string &filename) {
     	ifstream fin(filename);
     	if(!fin.is_open()) {
@@ -241,7 +301,7 @@ public:
     	while(getline(fin, line)) {
         	if(line.empty()) continue;
         
-        	// Xóa BOM (UTF-8) nếu có ở dòng đầu tiên
+        	// Xóa BOM (UTF-8) 
         	if(isFirstLine && line.size() >= 3) {
             	if((unsigned char)line[0] == 0xEF && 
                		(unsigned char)line[1] == 0xBB && 
@@ -251,7 +311,7 @@ public:
             	isFirstLine = false;
         	}
         
-        	// Xóa \r nếu có
+        	// Xóa \r
         	if(!line.empty() && line.back() == '\r')
             	line.pop_back();
             
@@ -260,14 +320,12 @@ public:
         	string item;
 
         	while(getline(ss, item, ',')) {
-            	// Xóa khoảng trắng đầu cuối
             	item.erase(0, item.find_first_not_of(" \t\r\n"));
             	item.erase(item.find_last_not_of(" \t\r\n") + 1);
             	fields.push_back(item);
         	}
 
         	if(fields.size() != 6) {
-            	cout << "Dong loi (khong du 6 truong): " << line << endl;
             	continue;
         	}
 
@@ -320,6 +378,7 @@ public:
 
             	cout << "Xoa nhan vien thanh cong!" << endl;
             	SaveToFile("Employees.txt");
+				DeleteUserFile(username);
             	return;
         	}
 
@@ -449,41 +508,70 @@ public:
 		cout<<"--- CAP THONG TIN NHAN VIEN ---"<<endl;
 		cout<<"Nhap username can cap nhat"<<endl;
 		string username;
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
     	getline(cin, username);
+
+		if(username.empty()) {
+			cout<<"Username khong duoc de trong"<<endl;
+			return;
+		}
+		
+		while(!username.empty() && isspace(username.front())) {
+			username.erase(username.begin());
+		}
+		while(!username.empty() && isspace(username.back())) {
+			username.pop_back();
+		}
 
 		Node *p = head;
 		while(p) {
-			if(p->data->getUsername() == username) {
+			string u = p->data->getUsername();
+
+			while(!u.empty() && isspace(u.front())) {
+				u.erase(u.begin());
+			}
+			while(!u.empty() && isspace(u.back())) {
+				u.pop_back();
+			}
+			if(u == username) {
 				cout<<"Tim thay nhan vien: "<<username<<endl;
+				cout<<"Thong tin hien tai:"<<endl;
+				cout<<"Ho ten: "<<p->data->getName()<<endl;
+				cout<<"Dia chi: "<<p->data->getAddress()<<endl;
+				cout<<"So dien thoai: "<<p->data->getPhonenumber()<<endl;
+				cout<<"Email: "<<p->data->getEmail()<<endl;
+				cout<<"--- Nhap thong tin moi (bo trong neu giu nguyen) ---"<<endl;
+
 				string name, address, phone, email;
 
-				cout<<"Nhap ho ten moi (bo trong neu giu nguyen): ";
+				cout<<"Nhap ho ten moi: ";
 				getline(cin, name);
-				name = standardizeNames(name);
-
-				cout<<"Nhap dia chi moi (bo trong neu giu nguyen): ";
-				getline(cin, address);
-				cout<<"Nhap so dien thoai moi (bo trong neu giu nguyen): ";
-				getline(cin, phone);
-				cout<<"Nhap email moi (bo trong neu giu nguyen): ";
-				getline(cin, email);
-
-				// Cập nhật nếu có nhập
 				if(!name.empty()) {
-					p->data->setName(name); // username cần được giữ nguyen
+					name = standardizeNames(name);
+					p->data->setName(name);
 				}
+
+				cout<<"Nhap dia chi moi: ";
+				getline(cin, address);
 				if(!address.empty()) {
-						p->data->setAddress(address);
+					p->data->setAddress(address);
 				}
+
+				cout<<"Nhap so dien thoai moi: ";
+				getline(cin, phone);
 				if(!phone.empty()) {
 					p->data->setPhonenumber(phone);
 				}
+
+				cout<<"Nhap email moi: ";
+				getline(cin, email);
 				if(!email.empty()) {
 					p->data->setEmail(email);
 				}
-				cout<<"Cap nhat thong tin cho nhan vien thanh cong"<<endl;
+
+				cout<<"Cap nhat thong tin thanh cong"<<endl;
 				SaveToFile("Employees.txt");
+
+				UpdateUserFile(p->data->getUsername(), p->data->getName(), p->data->getAddress(), p->data->getPhonenumber(), p->data->getEmail());
 				return;
 			}
 			p = p->next; // Di chuyển cập nhật nhân viên khác
@@ -594,6 +682,7 @@ public:
 				}
 				cout<<endl;
 				p->data->setPassword(newPass);
+				SaveToFile("Employees.txt");
 				cout<<"Doi mat khau thanh cong"<<endl;
 				return;
 			}	
@@ -699,6 +788,11 @@ class Administrator : public User{
 		cout<<"Nhap username: ";
 		getline(cin, username);
 
+		if(list.isUsernameExists(username)) {
+			cout<<"Username da ton tai, khong the them nhan vien"<<endl;
+			return;
+		}
+
 		cout<<"Nhap ho ten: ";
 		getline(cin, name);
 		name = standardizeNames(name);
@@ -712,23 +806,26 @@ class Administrator : public User{
 		cout<<"Nhap email: ";
 		getline(cin, email);
 
-		// Tạo mật khẩu cho nhân viên mặc định là 11111
-		Employee *e = new Employee(username, "11111", name, address, phone, email);
-
+		// Tạo mật khẩu cho nhân viên mặc định là 111111
+		Employee *e = new Employee(username, "111111", name, address, phone, email);
 		list.AddEmployee(e); // Thêm vào danh sách
 	}
+	
 	void deleteEmployee(EmployeeList &list){
 		cout<<"--- XOA NHAN VIEN ---"<<endl;
 		list.DeleteEmployee();
 
 	}
+
 	void Search(EmployeeList &list){
 		cout<<"-- TIM KIEM THONG TIN NHAN VIEN"<<endl;
 		list.SortAndSearch();
 	}
+
 	void Update(EmployeeList &list){
 		list.UpdateEmployee();
 	}
+
 	void Showall(EmployeeList &list){
 		if (!list.toVector().size()) {
         	cout << "Danh sach nhan vien rong." << endl;
@@ -802,6 +899,7 @@ int main() {
 				
 				cin>>choice;
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
                 switch (choice) {
                     case 1:
                         admin.addEmployee(list);
@@ -861,6 +959,9 @@ int main() {
             }
         } while (choice != 4);
     } 
+	else if (roleChoice == 3) {
+		cout<<"Thoat chuong trinh..."<<endl;
+	}
     else {
         cout<<"Lua chon khong hop le. Ket thuc chuong trinh"<<endl;
     }
