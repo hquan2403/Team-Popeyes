@@ -1,39 +1,43 @@
-#include <bits/stdc++.h>
-#include <conio.h> // để dùng getch()
-using namespace std;
-const int MOD = 1e9 + 7;
+#include <iostream> 
+#include <string> 
+#include <vector> 
+#include <sstream> 
+#include <algorithm> 
+#include <conio.h> 
+#include <fstream> 
+#include <queue> 
+#include <limits> 
+using namespace std; 
+
+const int MOD = 1e9 + 7; 
 const int MAXN = 1e6;
-
-// thuật toán: sort , search , delete.
-// List Employee_Formation , add.
-
 
 // Lớp làm đơn xin nghỉ
 class LeaveRequest {
 public:
-    string username;  // ai gửi đơn
-    string reason;    // lý do nghỉ
-    int days;         // số ngày nghỉ
+    string username;  
+    string reason;    
+    int days;         
 
     LeaveRequest(const string &u, const string &r, int d)
         : username(u), reason(r), days(d) {}
 };
 
-// Hàm chuẩn hóa tên
-string standardizeNames(string name) {
-	stringstream ss(name);
-	string word = "";
-	string res = "";
-	while(ss >> word) {
-		word[0] = toupper(word[0]);
-		for(int i = 1; i < word.size(); i++) {
-			word[i] = tolower(word[i]);
+	// Hàm chuẩn hóa tên
+	string standardizeNames(string name) {
+		stringstream ss(name);
+		string word = "";
+		string res = "";
+		while(ss >> word) {
+			word[0] = toupper(word[0]);
+			for(int i = 1; i < word.size(); i++) {
+				word[i] = tolower(word[i]);
+			}
+			res += word + " ";
 		}
-		res += word + " ";
+		res.pop_back();
+		return res;
 	}
-	res.pop_back();
-	return res;
-}
 
 class User{
 protected:
@@ -43,7 +47,7 @@ public:
 	// construct , coppy construct , destruct
 	User(
 		const string _Username= "user111",
-		const string _Password= "11111" // sửa lại mật khẩu cho đúng định dạng 111111
+		const string _Password= "11111" 
 	){
 		Username = _Username;
 		Password = _Password;
@@ -66,16 +70,6 @@ public:
 		Password = a;
 	}
 
-	//>>, <<
-	//friend istream& operator >> (istream& is, User &a){
-		//cout<<"Hay nhap ten tai khoan: ";
-		//getline(is,a.Username);
-		//cout<<"Hay nhap mat khau cua ban: ";
-		//getline(is,a.Password);
-		//return is;
-
-	//}
-
 	public: 
 	virtual void input(istream& is) {
 		cout<<"Hay nhap ten tai khoan: ";
@@ -84,27 +78,21 @@ public:
 		getline(is, Password);
 	}
 
-	//friend ostream& operator << (ostream& os, const User &a){
-	//	os<<"Ten tai khoan cua ban la: "<<a.getUsername()<<endl;
-	//	os<<"Mat khau cua ban la: "<<a.getPassword()<<endl;
-	//	return os;
-	//}
-
 	virtual void output(ostream& os) const {
 		os<<"Ten tai khoan cua ban la: "<<getUsername()<<endl;
 		os<<"Mat khau cua ban la: "<<getPassword()<<endl;
 	}
 };
-	// Đưa các toán tử ea ngoài và để là hàm ảo để dừng vòng đệ quy
+
 	istream& operator>>(istream& is, User& a) {
-		a.input(is); // Chỉ cần gọi hàm ảo input
+		a.input(is); 
 		return is;
 	}
 
 	ostream& operator<<(ostream& os, const User& a) {
-    a.output(os); // Chỉ cần gọi hàm ảo output
-    return os;
-}
+    	a.output(os); 
+    	return os;
+	}
 
 class Employee : public User {
 	private:
@@ -112,8 +100,6 @@ class Employee : public User {
 	string Address;
 	string Phonenumber;
 	string Email;
-	int rewardSuggestion;
-	 int performanceScore;
 	
 	public:
 	// construct , coppy construct , destruct
@@ -123,17 +109,13 @@ class Employee : public User {
 		const string _Name = "Nguyen Van A",
 		const string _Address= "111 Tran Hung Dao Quan 1",
 		const string _Phonenumber ="1234567890",
-		const string _Email ="NguyenVanA@gmail.com",
-		int _rewardSuggestion = 0,
-		int _performanceScore = 0
+		const string _Email ="NguyenVanA@gmail.com"
 	):User(_Username,_Password){
 
 	this->Name = _Name;
 	this->Address = _Address;
 	this->Phonenumber = _Phonenumber;
 	this->Email = _Email;
-	this->rewardSuggestion = _rewardSuggestion;
-	this->performanceScore = _performanceScore;
 	}	
 	string getName() const{
 		return Name;
@@ -147,23 +129,14 @@ class Employee : public User {
 	 string getEmail() const {
 		return Email;
 	}
-	int getRewardSuggestion() const {
-		return rewardSuggestion;
-	}
-	int getPerformanceScore() const {
-		return performanceScore;
-	}
-
 	void setName(const string &_Name) { Name = _Name; }
 	void setAddress(const string &_Address) { Address = _Address; }
 	void setPhonenumber(const string &_Phone) { Phonenumber = _Phone; }
 	void setEmail(const string &_Email) { Email = _Email; }
-	void setRewardSuggestion(int r) { rewardSuggestion = r; }
-    void setPerformanceScore(int s) { performanceScore = s; }
+
 
 	void input(istream& is) override {
         User::input(is); // Gọi hàm input của lớp cha để nhập Username/Password
-        // Sau đó nhập các thông tin riêng của Employee
         cout << "Hay nhap ho ten cua ban: ";
         getline(is, Name);
         cout << "Hay nhap dia chi cua ban: ";
@@ -172,26 +145,15 @@ class Employee : public User {
         getline(is, Phonenumber);
         cout << "Hay nhap email cua ban: ";
         getline(is, Email);
-
-		string tmp;
-		cout<<"Nhap muc thuong de xuat (so nguyen, bo trong la 0): ";
-		getline(is, tmp);
-		if (!tmp.empty()) rewardSuggestion = stoi(tmp);
-		cout<<"Nhap diem hieu suat (so nguyen, bo trong la 0): "; 
-		getline(is, tmp);
-		if (!tmp.empty()) performanceScore = stoi(tmp);
     }
 	void output(ostream& os) const override {
         User::output(os); // Gọi hàm output của lớp cha để xuất thông tin chung
-        // Sau đó xuất các thông tin riêng của Employee
-        os<<"Ho ten cua ban la: "<<getName()<<endl;
-        os<<"Dia chi cua ban la: "<< getAddress()<<endl;
-        os<<"So dien thoai cua ban la: "<<getPhonenumber()<<endl;
-        os<<"Email cua ban la: "<<getEmail()<<endl;
-		os<<"Muc thuong de xuat: "<<getRewardSuggestion()<<endl;
-		os<<"Diem hieu suat: "<<getPerformanceScore() <<endl;
+        os << "Ho ten cua ban la: " << getName() << endl;
+        os << "Dia chi cua ban la: " << getAddress() << endl;
+        os << "So dien thoai cua ban la: " << getPhonenumber() << endl;
+        os << "Email cua ban la: " << getEmail() << endl;
     }
-}; // Kết thúc lớp Employee
+}; 
 
 
 // Class cho danh sách liên kết
@@ -223,60 +185,149 @@ public:
 	}
 
 	// Hàm thêm nhân viên vào danh sách
-	void AddEmployee(Employee *emp) {
+	void AddEmployee(Employee *emp, bool saveToFile = true) {
+		if(!emp) return;
+		if(emp->getUsername().empty() || emp->getName().empty()) return;
+
 		Node *newNode = new Node(emp);
 		if(head == NULL) {
 			head = newNode;
 		} else {
 			Node *tmp = head;
 			while(tmp->next != nullptr) {
-			tmp = tmp->next;
+				tmp = tmp->next;
 			}
 			tmp->next = newNode;
 		}
 		cout<<"Da them nhan vien thanh cong va mat khau mac dinh cua nhan vien la 11111"<<endl;
+		if(saveToFile) {
+			SaveToFile("Employees.txt");
+		}
+	}
+
+	// Lưu danh sách nhân viên ra file Employees.txt
+	void SaveToFile(const string &filename) {
+    	ofstream fout(filename);
+    	if(!fout.is_open()) {
+        	cout << "Loi mo file de ghi!" << endl;
+        	return;
+    	}
+    	Node *p = head;
+    	while(p) {
+			if(!p->data->getUsername().empty() && !p->data->getName().empty()) {
+				fout<<p->data->getUsername()<<","
+					<<p->data->getPassword()<<","
+					<<p->data->getName()<<","
+					<<p->data->getAddress()<<","
+					<<p->data->getPhonenumber()<<","
+					<<p->data->getEmail()<<endl;
+			}
+			p = p->next;
+    	}
+    	fout.close();
+	}
+
+	
+	void LoadFromFile(const string &filename) {
+    	ifstream fin(filename);
+    	if(!fin.is_open()) {
+        	cout << "Khong mo duoc file Employees.txt" << endl;
+        	return;
+    	}
+
+    	string line;
+    	bool isFirstLine = true;
+    
+    	while(getline(fin, line)) {
+        	if(line.empty()) continue;
+        
+        	// Xóa BOM (UTF-8) nếu có ở dòng đầu tiên
+        	if(isFirstLine && line.size() >= 3) {
+            	if((unsigned char)line[0] == 0xEF && 
+               		(unsigned char)line[1] == 0xBB && 
+               		(unsigned char)line[2] == 0xBF) {
+                	line = line.substr(3);
+            	}
+            	isFirstLine = false;
+        	}
+        
+        	// Xóa \r nếu có
+        	if(!line.empty() && line.back() == '\r')
+            	line.pop_back();
+            
+        	stringstream ss(line);
+       		vector<string> fields;
+        	string item;
+
+        	while(getline(ss, item, ',')) {
+            	// Xóa khoảng trắng đầu cuối
+            	item.erase(0, item.find_first_not_of(" \t\r\n"));
+            	item.erase(item.find_last_not_of(" \t\r\n") + 1);
+            	fields.push_back(item);
+        	}
+
+        	if(fields.size() != 6) {
+            	cout << "Dong loi (khong du 6 truong): " << line << endl;
+            	continue;
+        	}
+
+        	Employee *e = new Employee(
+            	fields[0], fields[1], fields[2],
+            	fields[3], fields[4], fields[5]
+        	);
+
+        	AddEmployee(e, false); 
+    	}
+    	fin.close();
 	}
 
 	// Hàm xóa nhân viên
 	void DeleteEmployee() {
-		if(!head) {
-			cout<<"Danh sach rong";
-			return;
-		}
-		cout<<"Nhap username can xoa: ";
-		string username;
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		getline(cin, username);
+    	cout << "Nhap username can xoa: ";
+    	string username;
+    	getline(cin, username);
 
-		// head cần xóa nằm đầu linked list
-		if(head->data->getUsername() == username) {
-			Node *tmp = head;
-			head = head->next;
-			if(tmp->data) {
-				delete tmp->data;
-			}
-			delete tmp;
-			cout<<"Da xoa nhan vien: "<<username<<endl;
-			return;
-		}
+    	if (username.empty()) {
+        	cout << "Username khong duoc de trong" << endl;
+        	return;
+    	}
 
-		// Từ thứ hai trở đi
-		Node *prev = head;
-		Node *cur = head->next;
-		while(cur) {
-			if(cur->data->getUsername() == username) {
-				prev->next = cur->next;
-				if(cur->data) {
-					delete cur->data;
-				}
-				delete cur;
-				cout<<"Da xoa nhan vien: "<<username<<endl;
-				return;
-			}
-			prev = cur;
-			cur = cur->next;
-		}
-		cout<<"Khong tim thay username: "<<username<<endl;
+    	while (!username.empty() && isspace(username.front())) 
+        	username.erase(username.begin());
+    	while (!username.empty() && isspace(username.back())) 
+        	username.pop_back();
+
+    	Node *cur = head;
+    	Node *prev = nullptr;
+
+    	while(cur != nullptr) {
+        	string u = cur->data->getUsername();
+        
+        	while (!u.empty() && isspace(u.front())) 
+            	u.erase(u.begin());
+        	while (!u.empty() && isspace(u.back())) 
+            	u.pop_back();
+
+        	if(u == username) {
+            	if(prev == nullptr) {
+                	head = cur->next;
+            	} else {
+                	prev->next = cur->next;
+            	}
+
+            	delete cur->data;
+            	delete cur;
+
+            	cout << "Xoa nhan vien thanh cong!" << endl;
+            	SaveToFile("Employees.txt");
+            	return;
+        	}
+
+        	prev = cur;
+        	cur = cur->next;
+    	}
+
+    	cout << "Khong tim thay username: " << username << endl;
 	}
 
 	// Hàm hiển thị
@@ -297,17 +348,6 @@ public:
 		}
 	}
 
-	// Lấy tất cả con trỏ 
-	vector<Employee*> getAllEmployeePtrs() const {
-    	vector<Employee*> res;
-    	Node *p = head;
-    	while (p) {
-     	   res.push_back(p->data);
-     	   p = p->next;
-    	}
-    	return res;
-	}	
-
 	// Chuyển linked list sang vector để dễ sử dụng Merge Sort và Binary Search
 	vector<Employee> toVector() const {
 		vector<Employee> v;
@@ -318,99 +358,7 @@ public:
 		}
 		return v;
 	}
-
-	// Lưu danh sách nhân viên và các đơn xin nghỉ ra file
-	void saveToFile(const string& filename = "employees.txt") {
-		ofstream fout(filename);
-		if(!fout) {
-			cout << "Khong the mo file de ghi!" << endl;
-			return;
-		}
-		Node *p = head;
-		while(p) {
-			Employee *e = p->data;
-			fout<<e->getUsername()<<endl;
-			fout<<e->getPassword()<<endl; 
-			fout<<e->getName()<<endl; 
-			fout<<e->getAddress()<<endl; 
-			fout<<e->getPhonenumber()<<endl; 
-			fout<<e->getEmail()<<endl;
-			fout<<e->getRewardSuggestion()<<endl;
-			fout<<e->getPerformanceScore()<<endl; 
-			p = p->next;
-		}
-		// Ghi số lượng đơn xin nghỉ
-		fout<<leaveQueue.size()<<endl;
-		queue<LeaveRequest> tmpQueue = leaveQueue;
-		while(!tmpQueue.empty()) {
-			LeaveRequest &req = tmpQueue.front();
-			fout<<req.username<<endl;
-			fout<<req.reason<<endl;
-			fout<<req.username<<endl;
-			tmpQueue.pop();
-		}
-		fout.close();
-		cout<<"Da luu danh sach nhan vien va don xin nghi vao file"<<filename<<endl;
-	}
-		
-	// Đọc danh sách nhân viên và đơn xin nghỉ từ file
-	void loadFromFile(const string& filename = "employees.txt") {
-		ifstream fin(filename);
-		if(!fin) { 
-			cout << "Khong the mo file de doc!" << endl; 
-			return; 
-		}
-
-		// Trước hết xóa danh sách hiện tại
-		Node *current = head;
-		while(current) {
-			Node *nextNode = current->next;
-			delete current;
-			current = nextNode;
-		}
-		head = nullptr;
-		leaveQueue = queue<LeaveRequest>(); // reset queue
-
-		string line;
-		while(getline(fin, line)) {
-			string username = line;
-			if(username.empty()) {
-				break;
-			}
-			string password, name, address, phone, email;
-			int reward, perf;
-
-			getline(fin, password);
-			getline(fin, name);
-			getline(fin, address);
-			getline(fin, phone);
-			getline(fin, email);
-			getline(fin, line);
-			reward = stoi(line);
-			getline(fin, line);
-			perf = stoi(line);
-
-			Employee *e = new Employee(username, password, name, address, phone, email, reward, perf);
-			AddEmployee(e);
-
-			// Đọc số lượng đơn xin nghỉ
-			int leaveCount = 0;
-			if(fin >> leaveCount) {
-				fin.ignore(numeric_limits<streamsize>::max(), '\n');
-				for(int i = 0; i < leaveCount; i++) {
-					string uname, reason;
-					int days;
-					getline(fin, uname);
-					getline(fin, reason);
-					fin>>days;
-					fin.ignore(numeric_limits<streamsize>::max(), '\n');
-					leaveQueue.push(LeaveRequest(uname, reason, days));
-				}
-			}
-		}
-		fin.close();
-		cout<<"Da doc danh sach nhan vien va don xin nghi tu file "<<filename<<endl;
-	}
+			
 	// Hàm sắp xếp (Merge Sort)
 	static void merge(vector<Employee> &v, int l, int m, int r) {
 		vector<Employee> left(v.begin() + l, v.begin() + m + 1);
@@ -535,12 +483,13 @@ public:
 					p->data->setEmail(email);
 				}
 				cout<<"Cap nhat thong tin cho nhan vien thanh cong"<<endl;
+				SaveToFile("Employees.txt");
 				return;
 			}
-				p = p->next; // Di chuyển cập nhật nhân viên khác
-			}
-			cout<<"Khong tim thay nhan vien co username:"<<username<<endl;
+			p = p->next; // Di chuyển cập nhật nhân viên khác
 		}
+		cout<<"Khong tim thay nhan vien co username:"<<username<<endl;
+	}
 
 	Employee *currentUser = nullptr;
 
@@ -627,34 +576,27 @@ public:
 		Node *p = head;
 		while(p != nullptr) {
 			if(p->data->getUsername() == user && p->data->getPassword() == oldPass) {
-				do {
-					cout<<"Nhap mat khau moi (8 - 20 ky tu): ";
-					newPass = "";
-					while(true) {
-						ch = _getch();
-						if(ch == 13) { // Phím enter
-							break;
-						} else if (ch == 8) { // Phím backspace
-							if(!newPass.empty()) {
-								cout<<"\b \b";
-								newPass.pop_back();
-							}
-						} else {
-							newPass.push_back(ch);
-							cout<<"*";
-						}
-					} 
-					cout<<endl;
-					if(newPass.size() < 8 || newPass.size() > 20) {
-						cout<<"Mat khau phai tu 8 - 20 ky tu, vui long nhpa lai"<<endl;
-					} else {
+				cout<<"Nhap mat khau moi: ";
+				newPass = "";
+				while(true) {
+					ch = _getch();
+					if(ch == 13) { // Enter
 						break;
+					} else if(ch == 8) { // Backspeace
+						if(!newPass.empty()) {
+							cout<<"\b \b";
+							newPass.pop_back();
+						}
+					} else {
+						newPass.push_back(ch);
+						cout<<"*";
 					}
-				} while(true);
+				}
+				cout<<endl;
 				p->data->setPassword(newPass);
 				cout<<"Doi mat khau thanh cong"<<endl;
-            	return;
-			}
+				return;
+			}	
 			p = p->next;
 		}
 		cout<<"Username hoac mat khau khong chinh xac"<<endl;
@@ -754,16 +696,8 @@ class Administrator : public User{
     	string username, name, address, phone, email;
 
 		cout<<"--- THEM NHAN VIEN MOI ---"<<endl;
-
-		do {
-			cout<<"Nhap username (toi thieu 5 ky tu): ";
-			getline(cin, username);
-			if(username.size() < 5) {
-				cout<<"Username phai it nhat 5 ky tu, vui long nhap lai"<<endl;
-			} else {
-				break;
-			}
-		}while(true);
+		cout<<"Nhap username: ";
+		getline(cin, username);
 
 		cout<<"Nhap ho ten: ";
 		getline(cin, name);
@@ -772,62 +706,11 @@ class Administrator : public User{
 		cout<<"Nhap dia chi: ";
 		getline(cin, address);
 
-		do {
-			cout<<"Nhap so dien thoai (luu y: so dien thoai duoc tao phai dung 10 chu so): ";
-			getline(cin, phone);
-			cout<<endl;
-			if(phone.size() != 10 || !all_of(phone.begin(), phone.end(), ::isdigit)) { // Số điện thoại phải đúng 10 chữ số và tất cả chúng phải là chữ số (digit)
-				cout<<"So dien thoai khong hop le, vui long nhap lai"<<endl;
-			} else {
-				break;
-			}
-		} while(true);
+		cout<<"Nhap so dien thoai: ";
+		getline(cin, phone);
 
-		do {
-			cout<<"Nhap email (luu y: gmail phai dung dinh dang): ";
-			getline(cin, email);
-			if(email.find("@gmail.com") == string::npos) {
-				cout<<"Email khong dung dinh dang, vui long nhap lai"<<endl;
-			} else {
-				break;
-			}
-		} while(true);
-
-		int rewardVal = 0;
-		int perfVal = 0;
-		string tmp;
-
-		do {
-			cout<<"Nhap muc thuong de xuat (>= 0): ";
-			getline(cin, tmp);
-			if (tmp.empty()) {
-				rewardVal = 0; 
-				break; 
-			}
-			try {
-				rewardVal = stoi(tmp);
-				if (rewardVal < 0) throw 1;
-				break;
-			} catch(...) {
-				cout<<"Gia tri khong hop le (>= 0), vui long nhap lai"<<endl;
-			} 
-		} while(true);
-
-		do {
-			cout<<"Nhap diem hieu suat (>= 0): ";
-			getline(cin, tmp);
-			if (tmp.empty()) {
-				perfVal = 0; 
-				break; 
-			}
-			try {
-        		perfVal = stoi(tmp);
-        		if (perfVal < 0) throw 1;
-        		break;
-    		} catch(...) {
-        		cout<<"Gia tri khong hop le (>= 0), vui long nhap lai"<<endl;
-    		}
-		} while(true);
+		cout<<"Nhap email: ";
+		getline(cin, email);
 
 		// Tạo mật khẩu cho nhân viên mặc định là 11111
 		Employee *e = new Employee(username, "11111", name, address, phone, email);
@@ -855,12 +738,12 @@ class Administrator : public User{
 		int index = 1;
 		for(auto &e : v) {
 			cout<<"Nhan vien so: "<<index<<endl;
-			cout<<"Ten: "<<e.getName()<<endl;
-			cout<<"Username: "<<e.getUsername()<<endl;
-			cout<<"SĐT: "<<e.getPhonenumber()<<endl;
-			cout<<"Email: "<<e.getEmail()<<endl;
-			cout<<"Dia chi: "<<e.getAddress()<<endl;
-			cout<<"Mat khau: "<<e.getPassword()<<endl;
+			cout<<"Ten "<<e.getName()<<endl;
+			cout<<"Username "<<e.getUsername()<<endl;
+			cout<<"SĐT "<<e.getPhonenumber()<<endl;
+			cout<<"Email "<<e.getEmail()<<endl;
+			cout<<"Dia chi "<<e.getAddress()<<endl;
+			cout<<"Mat khau "<<e.getPassword()<<endl;
 			index++;
 		}
 	}
@@ -887,189 +770,100 @@ class Administrator : public User{
 			list.leaveQueue.pop();
 		}
 	}
-
-	// Hàm phân bố thưởng cho nhân viên (quy hoạch động)
-	void OptimizeBonus(EmployeeList &list) {
-		vector<Employee*> emps = list.getAllEmployeePtrs(); // Lấy danh sách nhân viên
-		int n = emps.size();
-		if (n == 0) {
-        	cout<<"Danh sach nhan vien rong"<<endl;
-        	return;
-    	}
-
-		int budget;
-		cout<<"Nhap ngan sach thuong (>= 0): ";
-		cin >> budget;
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-		if (budget <= 0) {
-        	cout << "Ngan sach phai > 0"<<endl;
-        	return;
-    	}
-
-		vector<int> reward(n), perf(n);
-		for (int i = 0; i < n; ++i) {
-        	reward[i] = emps[i]->getRewardSuggestion();
-        	perf[i] = emps[i]->getPerformanceScore();
-
-			// Không được âm
-        	if (reward[i] < 0) reward[i] = 0;
-        	if (perf[i] < 0) perf[i] = 0;
-    	}
-
-		vector<vector<int>> dp(n+1, vector<int>(budget+1, 0));
-		for (int i = 1; i <= n; ++i) {
-        	for (int w = 0; w <= budget; ++w) {
-           		if (reward[i-1] <= w) {
-					dp[i][w] = max(dp[i-1][w], dp[i-1][w - reward[i-1]] + perf[i-1]);
-				}
-            	else {
-                	dp[i][w] = dp[i-1][w];
-        		}
-    		}
-		}
-
-		int best = dp[n][budget];
-		cout<<"Tong diem hieu suat toi da: "<<best<<endl;
-
-		int w = budget;
-    	vector<int> chosenIndices;
-    	for (int i = n; i >= 1; --i) {
-        	if(dp[i][w] != dp[i-1][w]) {
-
-           		// item i-1 được chọn
-            	chosenIndices.push_back(i-1);
-            	w -= reward[i-1];
-            	if (w < 0) break;
-        	}
-    	}
-    	reverse(chosenIndices.begin(), chosenIndices.end());
-
-		if(chosenIndices.empty()) {
-        	cout<<"Khong co nhan vien nao duoc chon duoi ngan sach nay"<<endl;
-    	} else {
-        	int totalCost = 0, totalPerf = 0;
-        	cout<<"--- Danh sach nhan vien duoc chon de thuong ---"<<endl;
-        	for (int idx : chosenIndices) {
-        	    Employee *e = emps[idx];
-         		cout<<"Username: "<<e->getUsername()
-         	    << " | Ten: "<<e->getName()
-                << " | Thuong: "<<e->getRewardSuggestion()
-                << " | Diem: "<<e->getPerformanceScore()
-                << endl;
-            	totalCost += e->getRewardSuggestion();
-        		totalPerf += e->getPerformanceScore();
-        	}	
-        	cout<<"Tong chi phi: "<<totalCost<<" | Tong diem: "<<totalPerf<<endl;
-    	}
-	}
 };
-
 
 int main() {
     EmployeeList list;  
-	list.loadFromFile("Employees.txt");      
-    Administrator admin;  
-	
-	while(true) {
-		int roleChoice;   
-    	cout<<"==== XIN CHAO BAN DEN HE THONG QUAN LY NHAN SU ===="<<endl;
-    	cout<<"1. Ban la ADMIN"<<endl;
-    	cout<<"2. Ban la NHAN VIEN"<<endl;
-    	cout<<"Nhap lua chon: ";
-    	cin>>roleChoice;
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	list.LoadFromFile("Employees.txt");      
+    Administrator admin;      
+    int roleChoice;   
 
-    	if (roleChoice == 1) {
-     		// Đăng nhập Admin
-    		if (admin.LoginAd()) {
-           		int choice = 0;
-            	do {
-                	cout<<"\n=== MENU ADMIN ==="<<endl;
-                	cout<<"1. Them nhan vien moi"<<endl;
-                	cout<<"2. Xoa nhan vien"<<endl;
-                	cout<<"3. Cap nhat thong tin nhan vien"<<endl;
-                	cout<<"4. Tim kiem nhan vien"<<endl;
-                	cout<<"5. Hien thi danh sach nhan vien"<<endl;
-					cout<<"6. Duyen don xin nghi cua nhan vien"<<endl;
-					cout<<"7. Phan bo khoang thuong cho nhan vien"<<endl;
-                	cout<<"8. Thoat"<<endl;
-                	cout<<"Nhap lua chon: ";
+    cout<<"==== XIN CHAO BAN DEN HE THONG QUAN LY NHAN SU ===="<<endl;
+    cout<<"1. Ban la ADMIN"<<endl;
+    cout<<"2. Ban la NHAN VIEN"<<endl;
+	cout<<"3. Thoat chuong trinh"<<endl;
+    cout<<"Nhap lua chon: ";
+    cin>>roleChoice;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (roleChoice == 1) {
+        if (admin.LoginAd()) {
+            int choice = 0;
+            do {
+                cout<<"\n=== MENU ADMIN ==="<<endl;
+                cout<<"1. Them nhan vien moi"<<endl;
+                cout<<"2. Xoa nhan vien"<<endl;
+                cout<<"3. Cap nhat thong tin nhan vien"<<endl;
+                cout<<"4. Tim kiem nhan vien"<<endl;
+                cout<<"5. Hien thi danh sach nhan vien"<<endl;
+				cout<<"6. Duyen don xin nghi cua nhan vien"<<endl;
+                cout<<"7. Thoat"<<endl;
+                cout<<"Nhap lua chon: ";
 				
-					cin>>choice;
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                	switch (choice) {
-                	    case 1:
-                	        admin.addEmployee(list);
-                	        break;
-                	    case 2:
-                	        admin.deleteEmployee(list);
-                	        break;
-                	    case 3:
-                	        admin.Update(list);
-                	        break;
-                	    case 4:
-                	        admin.Search(list);
-                	        break;
-                	    case 5:
-                	        admin.Showall(list);
-                	        break;
-						case 6:
-							admin.ProcessLeaveRequests(list);
-            				break;
-						case 7:
-							admin.OptimizeBonus(list);
-    						break;
-                	    case 8:
-							list.saveToFile("Employees.txt");
-                	        cout<<"Dang xuat...\n";
-                	        break;
-                	    default:
-                	        cout<<"Lua chon khong hop le"<<endl;
-                	}
-            	} while (choice != 7);
-        	}
-    	} 
-    	else if (roleChoice == 2) {
-        	// Đăng nhập nhân viên
-        	list.LoginEm();
-        	int choice;
-        	do {
-         		cout<<"\n=== MENU NHAN VIEN ==="<<endl;
-         		cout<<"1. Xem thong tin ca nhan"<<endl;
-        		cout<<"2. Doi mat khau"<<endl;
-				cout<<"3. Lam don xin nghi"<<endl;
-        	    cout<<"4. Thoat"<<endl;
-        	    cout<<"Nhap lua chon: ";
-           		cin>>choice;
+				cin>>choice;
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-            	switch (choice) {
-            	    case 1:
-            	        list.Information();
-            	        break;
-            	    case 2:
-            	        list.ChangePassword();
-            	        break;
-					case 3:
-						list.SubmitLeaveRequest();
+                switch (choice) {
+                    case 1:
+                        admin.addEmployee(list);
+                        break;
+                    case 2:
+                        admin.deleteEmployee(list);
+                        break;
+                    case 3:
+                        admin.Update(list);
+                        break;
+                    case 4:
+                        admin.Search(list);
+                        break;
+                    case 5:
+                        admin.Showall(list);
+                        break;
+					case 6:
+						admin.ProcessLeaveRequests(list);
             			break;
-            	    case 4:
-						list.saveToFile("Employees.txt");
-            	        cout<<"Dang xuat..."<<endl;
-            	        break;
-            	    default:
-            	        cout<<"Lua chon khong hop le"<<endl;
-            	}
-        	} while (choice != 4);
-    	} 
-    	else if(roleChoice == 3) {
-			cout<<"Tam biet, hen gap lai"<<endl;
-			break;
-    	}
-		else {
-			cout<<"Lua chon khong hop le, vui long chon lai"<<endl;
-		}
-	}
+                    case 7:
+                        cout<<"Dang xuat...\n";
+                        break;
+                    default:
+                        cout<<"Lua chon khong hop le"<<endl;
+                }
+            } while (choice != 7);
+        }
+    } 
+    else if (roleChoice == 2) {
+        list.LoginEm();
+        int choice;
+        do {
+            cout<<"\n=== MENU NHAN VIEN ==="<<endl;
+            cout<<"1. Xem thong tin ca nhan"<<endl;
+            cout<<"2. Doi mat khau"<<endl;
+			cout<<"3. Lam don xin nghi"<<endl;
+            cout<<"4. Thoat"<<endl;
+            cout<<"Nhap lua chon: ";
+            cin>>choice;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            switch (choice) {
+                case 1:
+                    list.Information();
+                    break;
+                case 2:
+                    list.ChangePassword();
+                    break;
+				case 3:
+					list.SubmitLeaveRequest();
+            		break;
+                case 4:
+                    cout<<"Dang xuat..."<<endl;
+                    break;
+                default:
+                    cout<<"Lua chon khong hop le"<<endl;
+            }
+        } while (choice != 4);
+    } 
+    else {
+        cout<<"Lua chon khong hop le. Ket thuc chuong trinh"<<endl;
+    }
+
 return 0;
 }
