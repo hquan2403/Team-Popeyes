@@ -7,6 +7,7 @@
 #include <fstream> 
 #include <queue> 
 #include <limits> 
+#include <direct.h>
 using namespace std; 
 
 // Lớp làm đơn xin nghỉ
@@ -179,6 +180,11 @@ public:
 		}
 	}
 
+	// Hàm tạo thư mục nếu chưa tồn tại
+	void EnsureDirectoryExists() {
+		_mkdir("Employees_Information");
+	}
+
 	// Hàm kiểm tra username đã tồn tại chưa
 	bool isUsernameExists(const string &username) {
 		Node *p = head;
@@ -210,6 +216,7 @@ public:
 
 	// Tạo file thông tin cho user
 	void CreateUserFile (const string &username, const string &name, const string &address, const string &phone, const string &email) {
+		EnsureDirectoryExists();
 		string filename = "Employees_Information/" + username + ".txt";
 		ofstream fout(filename);
 		if(!fout.is_open()) {
@@ -230,7 +237,7 @@ public:
 
 	// Xóa thông tin user
 	void DeleteUserFile(const string &username) {
-		string filename = "Employee_Information/" + username + ".txt";
+		string filename = "Employees_Information/" + username + ".txt";
 		if(remove(filename.c_str()) == 0) {
 			cout<<"Da xoa file "<<filename<<endl;
 		}
@@ -257,7 +264,7 @@ public:
 			tmp->next = newNode;
 		}
 		if(saveToFile) {
-			cout<<"Da them nhan vien thanh cong va mat khau mac dinh cua nhan vien la 11111"<<endl;
+			cout<<"Da them nhan vien thanh cong va mat khau mac dinh cua nhan vien la 111111"<<endl;
 			SaveToFile("Employees.txt");
 
 			// Tạo file thông tin cho user

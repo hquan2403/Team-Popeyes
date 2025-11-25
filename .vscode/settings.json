@@ -60,5 +60,5 @@
     "iostream": "cpp",
     "iosfwd": "cpp",
     "ostream": "cpp"
-  }
+  },
 }
