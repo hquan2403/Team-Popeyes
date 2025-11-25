@@ -210,10 +210,10 @@ public:
 
 	// Tạo file thông tin cho user
 	void CreateUserFile (const string &username, const string &name, const string &address, const string &phone, const string &email) {
-		string filename = username + ".txt";
+		string filename = "Employees_Information/" + username + ".txt";
 		ofstream fout(filename);
 		if(!fout.is_open()) {
-			cout << "Loi tao file " << filename << endl;
+			cout<<"Loi tao file "<<filename<<endl;
 			return;
 		}
 		fout<<name<<endl;
@@ -230,7 +230,7 @@ public:
 
 	// Xóa thông tin user
 	void DeleteUserFile(const string &username) {
-		string filename = username + ".txt";
+		string filename = "Employee_Information/" + username + ".txt";
 		if(remove(filename.c_str()) == 0) {
 			cout<<"Da xoa file "<<filename<<endl;
 		}
